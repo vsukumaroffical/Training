@@ -1,0 +1,65 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class Client {
+    public static void main(String[] args) {
+		
+        String host = "localhost"; 
+        int port = 8080;           
+		try{
+			Socket socket = new Socket(host,port);
+			PrintWriter writer = new PrintWriter(socket.getOutputStream(),true);
+			Scanner scanner = new Scanner(System.in);
+			String consoleInput;
+			System.out.println("Type 'exit' to disconnect.");
+			while(true){
+				System.out.print("Message : ");
+				consoleInput = scanner.nextLine();
+				writer.println(consoleInput);
+				if(consoleInput.equalsIgnoreCase("exit"))
+					break;
+				else
+					System.out.println();
+			}
+			
+			socket.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		
+       /* try (Socket socket = new Socket(host, port);
+		
+             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
+
+             System.out.println("Connected to the server.");
+
+            
+           new Thread(() -> {
+                try {
+                    String serverMessage;
+                    while ((serverMessage = reader.readLine()) != null) {
+                        System.out.println(serverMessage);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start(); 
+
+            
+            String userInput;
+            while ((userInput = consoleReader.readLine()) != null) {
+                writer.println(userInput);
+                if (userInput.equalsIgnoreCase("exit")) {
+                    break;
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+    }
+}

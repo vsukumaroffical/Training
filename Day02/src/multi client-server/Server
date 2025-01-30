@@ -1,0 +1,59 @@
+import java.io.*;
+import java.net.*;
+import java.util.Date;
+
+public class Server {
+	private static int connectionId = 1;
+	private static final int PORT = 8080;
+    public static void main(String[] args) {
+         
+        try {
+			ServerSocket serverSocket = new ServerSocket(PORT); 
+            System.out.println("Server started");
+
+            while (true) {
+				
+                Socket clientSocket = serverSocket.accept();
+				
+                new ClientHandler(clientSocket,connectionId++).start(); 
+            }
+			
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+class ClientHandler extends Thread {
+	private String name = "Guest-";
+    private Socket clientSocket;
+
+    public ClientHandler(Socket socket,int connectionId) {
+        this.clientSocket = socket;
+		this.name = name + connectionId ;
+    }
+
+    @Override
+    public void run() {
+        try {
+			
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+           
+			
+            String clientMessage;
+            while ((clientMessage = reader.readLine()) != null) {
+                if (clientMessage.equalsIgnoreCase("exit")) {
+                    break;
+                }
+                System.out.println(name +": " + clientMessage);
+
+               
+            }
+            System.out.println("Disconnected: " + name);
+			
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

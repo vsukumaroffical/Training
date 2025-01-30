@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <form>
+    	<input id = "submit" type="button" value = "Get Time stamp">
+    	<p id = "display"></p>
+    </form>
+	<script>
+	$(document).ready(function () {
+	    $("#submit").on("click", function (event) {
+	        event.preventDefault(); 
+	        
+	        $.ajax({
+	            url: "http://localhost:8080/TimeStamp/getTimeStamp", 
+	            type: "GET", 
+	            success: function (response) {
+	            	alert(response);
+	            	const obj = typeof response === "string" ? JSON.parse(response) : response;
+                    const timestamp = obj.timestamp;
+                    $("#display").text("Server Timestamp: " + timestamp);
+                    
+	            },
+	            error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                    $("#display").text("Failed to fetch the timestamp.");
+                }
+	        });
+	    });
+	});
+
+	
+	</script>
+</body>
+</html>
